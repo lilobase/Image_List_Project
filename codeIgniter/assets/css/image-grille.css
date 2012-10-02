@@ -1,0 +1,13 @@
+.thumbnail .delete {
+    display: block;
+    margin: 15px auto 5px auto;
+    width: 100px;
+}
+
+.thumbnail h3{
+    text-align: center;
+}
+
+#add {
+	margin-bottom: 30px;
+}

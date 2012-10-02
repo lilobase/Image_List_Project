@@ -1,0 +1,162 @@
+--fichier session
+
+
+<?php
+
+class factory{
+    
+    private static $_instances;
+    
+    public static function getInstance($className, $Name = ''){
+        
+        $name = (!empty($name)) ?: $className;
+        
+        if(!isset(self::$_instances[$name]))
+            self::$_instances[$name] = new $className();
+        
+        return self::$_instances[$name];
+    }
+    
+    public function getObject($className){
+        return new $className();
+    }
+    
+}
+
+class session{
+
+    protected $sessionAccessor;
+
+    public function __construct() {
+
+    }
+    
+    public function setGlobalAccessor(globalAccessor $object) {
+        $this->sessionAccessor = $object;
+    }
+    
+    public function get($name){
+        return $this->sessionAccessor->get($name);
+    }
+    
+    public function set($name, $value){
+        return $this->sessionAccessor->set($name, $value);
+    }
+    
+    public function is_set($name){
+        return $this->sessionAccessor->is_set($name);
+    }
+    
+    public function __get($name){
+        return $this->sessionAccessor->get($name);
+    }
+    
+    public function __set($name, $value) {
+        return $this->sessionAccessor->set($name, $value);
+    }
+    
+    public function __isset($name) {
+        return $this->sessionAccessor->is_set($name);
+    }
+    
+}
+
+class sessionGlobalAccessor implements globalAccessor{
+    
+    protected $name_space = 'default';
+    
+    public function __construct() {
+        session_start();
+    }
+    
+    public function get($name){
+        return (isset($_SESSION[$this->name_space][$name])) ? $_SESSION[$this->name_space][$name] : null;
+    }
+    
+    public function set($name, $value){
+        $_SESSION[$this->name_space][$name] = $value;
+        
+        return true;
+    }
+    
+    public function is_set($name){
+        return isset($_SESSION[$this->name_space][$name]);
+    }
+    
+}
+
+class cookieGlobalAccessor implements globalAccessor{
+    
+    protected $name_space = 'default';
+    
+    public function __construct() {
+
+    }
+    
+    public function get($name){
+        return (isset($_COOKIE[$this->name_space][$name])) ? $_COOKIE[$this->name_space][$name] : null;
+    }
+    
+    public function set($name, $value){
+        $_COOKIE[$this->name_space][$name] = $value;
+        
+        return true;
+    }
+    
+    public function is_set($name){
+        return isset($_COOKIE[$this->name_space][$name]);
+    }
+    
+}
+
+interface globalAccessor{
+    
+    public function __construct();
+    
+    /**
+     * Accès à un item 
+     */
+    public function get($name);
+    
+    /**
+     *Définition d'un item
+     */
+    public function set($name, $value);
+    
+    /**
+     *Vérification qu'un item existe 
+     */
+    public function is_set($name);
+    
+}
+
+?>
+
+
+-- fichier session_test
+
+
+<?php
+
+require_once ('session.php');
+
+
+$sessionC = factory::getInstance('session', 'sessionCookies')
+                ->setGlobalAccessor(factory::getInstance('cookieGlobalAccessor'));
+
+$sessionS = factory::getInstance('session', 'sessionSession')
+                ->setGlobalAccessor(factory::getInstance('sessionGlobalAccessor'));
+
+$sessionD = factory::getInstance('session', 'sessionCookies');
+
+($sessionC === $sessionD);
+
+$session->foo = 'bar';
+
+$value = (isset($session->foo)) ? $session->foo : 'qux';
+
+var_dump($value);
+
+
+
+?>
