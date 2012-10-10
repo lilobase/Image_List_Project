@@ -14,9 +14,11 @@
             <?php if(!empty($error_message)): ?>
                 <div class="alert alert-error">
                     <h4>Error</h4>
+                    <?php foreach($error_message as $error): ?>
                     <p>
-                    <?php echo $error_message; ?>
+                    <?php echo $error ?>
                     </p>
+                    <?php endforeach; ?>
                 </div>
             <?php endif; ?>
             
@@ -25,15 +27,6 @@
                     <h4>Success</h4>
                     <p>
                     <?php echo $success_message; ?>
-                    </p>
-                </div>
-            <?php endif; ?>
-            
-            <?php if(!empty($delete_message)): ?>
-                <div class="alert alert-info">
-                    <h4>Delete</h4>
-                    <p>
-                    <?php echo $delete_message; ?>
                     </p>
                 </div>
             <?php endif; ?>
@@ -48,7 +41,7 @@
                             </a>
                             <p>
                                  <h3><?php echo (empty($image['name'])) ? '&nbsp;' : $image['name'] ?></h3>
-                                <a href="<?php echo site_url('imagelist_controller/del_image?var=' . $image['title']) ?>" class="btn btn-mini btn-primary delete">
+                                <a href="<?php echo site_url('image_controller/delete?id=' . $image['id']) ?>" class="btn btn-mini btn-primary delete">
                                     Delete Image
                                 </a>
                             </p>
@@ -64,7 +57,7 @@
 
 
             <div id="div_form" class="<?php if(!empty($data)) echo 'hide'; ?>">
-<?php $this->load->view('form/uploadimage'); ?>
+                <?php $this->load->view('form/uploadimage'); ?>
             </div>
 
 

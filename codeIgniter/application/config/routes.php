@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "imagelist_controller";
+$route['default_controller'] = "image_controller";
 $route['404_override'] = '';
 
 

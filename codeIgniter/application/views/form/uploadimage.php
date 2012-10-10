@@ -1,4 +1,4 @@
-<form class="form-horizontal" method="post" action ="<?php echo site_url() . 'imagelist_controller/uploadImage' ?>" enctype="multipart/form-data" >
+<form class="form-horizontal" method="post" action ="<?php echo site_url() . 'image_controller/upload' ?>" enctype="multipart/form-data" >
  
     <legend>Ajouter une image</legend>
     <div class="control-group">
