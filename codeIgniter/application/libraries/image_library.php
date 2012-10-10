@@ -28,8 +28,8 @@ class image_library {
          * CONFIG :
          */
         
-       $this->imageRootPath = FCPATH . DS. 'assets' . DS . 'images' . DS;
-       $this->imageRootURI = site_url() . 'assets/images/';
+       $this->imageRootPath = FCPATH . DS. 'upload' . DS . 'images' . DS;
+       $this->imageRootURI = site_url() . 'upload/images/';
 
         //initialization : make root directory
         if (!file_exists($this->imageRootPath)) {
